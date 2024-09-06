@@ -466,7 +466,7 @@ class trial_aligner:
             indices = self.frame_trial_indices
         if np.array(input_trial_indices).any():
             indices = np.array(self.input_trial_indices)
-        self.trial_type_raster, self.trial_type_hist, self.trial_type_psth, self.trial_type_smoothed_hist, self.PSTH_timepoints = get_raster_psth(self.cell_aligned_raster, indices, interval = interval, window_std = window_std, binsize = binsize)
+        self.trial_type_raster, self.trial_type_hist, self.trial_type_psth, self.PSTH_timepoints = get_raster_psth(self.cell_aligned_raster, indices, interval = interval, window_std = window_std, binsize = binsize)
     
     def get_cell_aligned_raster(self):
         return self.cell_aligned_raster
