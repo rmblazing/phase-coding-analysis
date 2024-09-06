@@ -2,8 +2,6 @@
 # coding: utf-8
 
 # In[ ]:
-import sys
-sys.path.append(r'C:\Users\rmb55\most_updated_pattern_stim\pattern_stim_analysis\paper\pattern_stim_code\analysis_packages')
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import hilbert, chirp
