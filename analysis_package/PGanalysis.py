@@ -432,7 +432,7 @@ class correlations:
         
         
 class trial_aligner: 
-    def __init__(self, tsecs, frame_on_time_s, expt_metadata, input_trial_indices = [], trials = 'all', interval = [-.54, 2.54], window_std = 10, binsize = .002, single_spot_stim = False):
+    def __init__(self, tsecs, frame_on_time_s, expt_metadata, input_trial_indices = [], trials = 'all', interval = [-1, 2], window_std = 10, binsize = .002, single_spot_stim = False):
         self.tsecs = tsecs
         self.frame_on_time_s = frame_on_time_s
         self.expt_metadata = expt_metadata
