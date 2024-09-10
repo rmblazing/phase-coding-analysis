@@ -2,7 +2,7 @@
 .ipynb_checkpoints
 
 # ignore pycache files. 
-.__pycache__
+__pycache__
 
 # ignote txt files.
 .txt
