@@ -41,16 +41,16 @@ class Spontaneous_activity_analysis:
         # for naris occlusion experiments, we need to get spontaneous data recorded in the middle of the session. 
         if expt_type == 'contra_occlusion':
             # get the last trial recorded in the contra occlusion condition
-            last_contra_trial = (len(frame_on_time_s)/2) - 1
+            last_contra_trial = int(len(frame_on_time_s)/2)-1
             # get the next 10 minutes of data after this trial for instantaneous phase, triggers, and spikes
-            self.instantaneous_phase_corrected = self.instantaneous_phase_corrected[0:(frame_on_time_s[last_contra_trial]*fs) + fs*60*10]
-            self.mtrigger_array = self.mtrigger_array[0:(frame_on_time_s[last_contra_trial]*fs) + fs*60*10]
+            self.instantaneous_phase_corrected = self.instantaneous_phase_corrected[0:int(frame_on_time_s[last_contra_trial]*fs) + fs*60*10]
+            self.mtrigger_array = self.mtrigger_array[0:int(frame_on_time_s[last_contra_trial]*fs) + fs*60*10]
             new_tsecs = []
             for cell in self.tsecs:
                 new_tsecs.append(cell[cell<(frame_on_time_s[last_contra_trial] + 60*10)])
             self.tsecs = new_tsecs
             frame_on_time_s = phase_analysis.get_frame_on_time_s(self.mtrigger_array)
-            self.last_frame_idx = (frame_on_time_s[-1]*fs).astype(int)
+            self.last_frame_idx = (frame_on_time_s[last_contra_trial]*fs).astype(int)
             expt_len = len(self.mtrigger_array)
             print('spontaneous activity recorded for ' + str(np.round((expt_len-self.last_frame_idx)/fs/60,2)) + ' minutes')
 
