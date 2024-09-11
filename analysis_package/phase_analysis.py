@@ -652,7 +652,7 @@ def plot_phase_binned_rasters(cell, stim, trial_type_raster_array, bin_indices_a
     PGanalysis.axis_fixer(ratio = .5, size = 30)
     
     
-def plot_phase_binned_rasters(trial_type_raster_array, bin_indices_all, cell, stim, bin_size_degrees = 36, axis_width = 1.822):
+def plot_phase_binned_rasters(trial_type_raster_array, bin_indices_all, cell, stim, bin_size_degrees = 36, axis_width = 1.822, color = 'k'):
     '''
     This function plots the rasters for trials of spot stimululation binned by respiration phase.
     
@@ -674,7 +674,7 @@ def plot_phase_binned_rasters(trial_type_raster_array, bin_indices_all, cell, st
             if i in np.where(bin_indices_all[stim] == bin_num)[0]:
                 phase_binned_raster.append(trial)
         plt.subplot(4,5,bin_num)
-        plt.eventplot(phase_binned_raster, color = 'k', linewidths = .3);
+        plt.eventplot(phase_binned_raster, color = color, linewidths = .3);
         plt.xlim(-.1,.3)
         plt.ylim(0, len(phase_binned_raster))
         plt.yticks([0, len(phase_binned_raster)])
@@ -683,7 +683,7 @@ def plot_phase_binned_rasters(trial_type_raster_array, bin_indices_all, cell, st
         if (bin_num == 1)|(bin_num == 6):
             plt.ylabel('trial')
         plt.xlabel('time since stim (s)')
-        PGanalysis.axis_fixer(ratio = .5, size = 10, axis_width = axis_width)
+        PGanalysis.axis_fixer(ratio = .7, size = 10, axis_width = axis_width)
         
 def plot_spot_tuning_curves(tuning, cell, ylim = 30):
     '''
