@@ -439,6 +439,30 @@ def unravel_list(in_list):
     unraveled_list = [l for entry in in_list for l in entry]
     return unraveled_list
 
+def generate_training_data_phase_decoder(all_phase_expts_spot_cat):
+    '''
+    rearrange the axes so we end up with an n_bins x (n_spots x n_trials) x n_cells array. This gives us 150 trials per spot bin.
+    
+    parameters
+    ----------
+    all_phase_expts_spot_cat: 4d matrix with shape n_spots x n_bins x n_cells x n_trials
+    
+    outputs
+    -------
+    train_data: 2d matrix with shape n_instances (n_spots x n_bins x n_trials) x n_features (n_cells) used to train the svm 
+    labels: phase bins labels for each instance
+    
+    '''
+
+    all_phase_expts_spot_cat_arranged = np.moveaxis(all_phase_expts_spot_cat, (2,3), (3,2))
+    all_phase_expts_spot_cat_arranged = np.moveaxis(all_phase_expts_spot_cat_arranged, (0,1), (1,0))
+    all_phase_expts_spot_cat_reshaped = np.reshape(all_phase_expts_spot_cat_arranged,
+                                                   (all_phase_expts_spot_cat_arranged.shape[0],all_phase_expts_spot_cat_arranged.shape[1]*all_phase_expts_spot_cat_arranged.shape[2],all_phase_expts_spot_cat_arranged.shape[3]))
+    # reshape the training data in n_instances(150*20) x n_features(519). create a labels array with 150 trials per phase bin. 
+    train_data = np.reshape(all_phase_expts_spot_cat_reshaped, (all_phase_expts_spot_cat_reshaped.shape[0]*all_phase_expts_spot_cat_reshaped.shape[1],all_phase_expts_spot_cat_reshaped.shape[2]))
+    labels = np.repeat(np.arange(all_phase_expts_spot_cat_reshaped.shape[0]),all_phase_expts_spot_cat_reshaped.shape[1])
+    return train_data, labels 
+
 ''' class to pull out phase tuning response stats'''
 class Phase_response_stats:
     def __init__(self, cell, bins, resp_spots, stim_resp_pref_phase, peak_times, all_psth_phase_mean_sorted, time_to_50, all_psth_phase_mean_norm, stim_activated):
@@ -712,4 +736,34 @@ def plot_spot_tuning_curves(tuning, cell, ylim = 30):
         plt.xlabel('phase')
         if (stim == 1)|(stim == 6):
             plt.ylabel('FR (Hz)')
+        PGanalysis.axis_fixer(ratio = 1, size = 15)
+        
+def plot_contra_ipsi_spot_tuning_curves(tuning_contra, tuning_ipsi, cell, ylim = 30):
+    '''
+    This function plots the phase tuning curves for each stimulated spot.
+    
+    parameters
+    ------
+    cell: index of the cell to plot
+        
+    outputs
+    -------
+    plot of tuning curves by respiration phase for each stimulation spot.
+    
+    '''
+    phases = np.arange(0,360,18)
+    plt.figure(figsize = (10,5))
+    for stim in range(0,6):
+        plt.subplot(1,6,stim+1)
+        plt.plot(phases,tuning_contra[stim,:,cell],'k', linewidth = 1)
+        plt.plot(phases,tuning_ipsi[stim,:,cell],'g', linewidth = 1)
+        plt.ylim(0,ylim)
+        plt.xlim(0,360)
+        plt.xticks([0,180,360])
+        plt.yticks([0,ylim/2,ylim])
+        plt.title('spot ' + str(stim))
+        plt.xlabel('phase')
+        if (stim == 0):
+            plt.ylabel('FR (Hz)')
+            plt.title('blank')
         PGanalysis.axis_fixer(ratio = 1, size = 15)
