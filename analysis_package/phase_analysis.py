@@ -634,7 +634,7 @@ def plot_phase_binned_PSTHs(cell, stim, trial_type_psth_array, bin_indices_all, 
     PGanalysis.axis_fixer(ratio = .5, size = 30)
     
 '''Plot rasters for each cell for each phase bin.'''
-def plot_phase_binned_rasters(cell, stim, trial_type_raster_array, bin_indices_all, bins, x):    
+def plot_phase_binned_rasters(cell, stim, trial_type_raster_array, bin_indices_all, bins, x, color = 'k'):    
     plt.figure(figsize = (50,20))
     for bin_num in range(1,len(bins)):
         cell_stim_raster = trial_type_raster_array[cell][stim]
@@ -643,7 +643,7 @@ def plot_phase_binned_rasters(cell, stim, trial_type_raster_array, bin_indices_a
             if i in np.where(bin_indices_all[stim] == bin_num)[0]:
                 phase_binned_raster.append(trial)
         plt.subplot(4,5,bin_num)
-        plt.eventplot(phase_binned_raster, linewidth = 5, color = 'k');
+        plt.eventplot(phase_binned_raster, linewidth = 5, color = color);
         plt.xlim(-.1,.3)
         plt.title(str(np.degrees(bins[bin_num])))
         plt.ylabel('trial')
